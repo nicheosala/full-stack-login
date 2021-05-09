@@ -9,6 +9,7 @@
   "description": "Example full-stack login.",
   "main": "login.js",
   "scripts": {
+    "start" : "login.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

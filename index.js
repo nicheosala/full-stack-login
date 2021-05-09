@@ -2,7 +2,13 @@ const { Client } = require('pg');
 const express = require('express');
 const session = require('express-session');
 
-let pg = new Client(process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin");
+let pg = new Client({
+    connection: process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin",
+    ssl: {
+        require: false,
+        rejectUnauthorized: false
+    }
+});
 
 (async () => {
     try {

@@ -1,17 +1,21 @@
-import { createPool } from 'mariadb';
-import express from 'express';
-import session from 'express-session';
+const { Client } = require('pg');
+const express = require('express');
+const session = require('express-session');
 
-let pool = createPool(process.env.JAWSDB_MARIA_URL);
-// JAWSDB_MARIA_URL=mariadb://root:mariadbpass@localhost:3306/nodelogin node login.js
+let pg = new Client(process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin");
 
-const connection = await pool.getConnection();
-await connection.query('CREATE DATABASE IF NOT EXISTS `nodelogin`');
-await connection.query('USE `nodelogin`');
-await connection.query('CREATE TABLE IF NOT EXISTS `accounts` (`id` INT AUTO_INCREMENT PRIMARY KEY, `username` varchar(50) NOT NULL, `password` varchar(255) NOT NULL)');
+(async () => {
+    try {
+        await pg.connect();
+        const createTableQuery = `create table if not exists accounts (id serial primary key, username varchar(255) not null, password varchar(255) not null);`
+        await pg.query(createTableQuery);
+        console.log(`Table 'accounts' successfully created.`);
+    } catch (error) {
+        console.error(error);
+    }
+})();
 
 let app = express();
-
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -22,8 +26,8 @@ app.post('/login', async (request, response) => {
     const password = request.body.password;
     if (username && password) {
         try {
-            const query = 'SELECT * FROM accounts WHERE username = ? AND password = ?';
-            const rows = await connection.query(query, [username, password]);
+            const query = 'SELECT * FROM accounts WHERE username = $1 AND password = $2;';
+            const {rows} = await pg.query(query, [username, password]);
             if (rows.length > 0) {
                 request.session.loggedin = true;
                 request.session.username = username;
@@ -47,8 +51,8 @@ app.post('/register', async (request, response) => {
     const password = request.body.password;
     if (username && password) {
         try {
-            const query = 'INSERT INTO `accounts` (`username`, `password`) VALUES (?, ?)';
-            await connection.query(query, [username, password]);
+            const query = 'INSERT INTO accounts (username, password) VALUES ($1, $2);';
+            await pg.query(query, [username, password]);
             request.session.loggedin = true;
             request.session.username = username;
             response.redirect('/home');

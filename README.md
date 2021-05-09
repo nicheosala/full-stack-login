@@ -23,3 +23,4 @@ Le istruzioni per installare i moduli richiesti dal web server e le istruzioni p
 Questo è un web server molto semplice. Ad esempio, sarebbe interessante:
 - [DONE] consentire la registrazione al sito web, attraverso la pagina '/register'
 - pubblicare il sito in modo da renderlo disponibile a chiunque su internet. Ad esempio, vale la pena imparare a utilizzare [Heroku](https://www.heroku.com/)
+- Postgres https://stackabuse.com/using-postgresql-with-nodejs-and-node-postgres/

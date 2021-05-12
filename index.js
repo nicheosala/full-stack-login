@@ -3,20 +3,12 @@ const express = require('express');
 const session = require('express-session');
 
 let pg = new Client({
-    connectionString : process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin",
+    connectionString: process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin",
     ssl: {
         require: false,
         rejectUnauthorized: false
     }
 });
-
-/*{
-    connection: process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin",
-    ssl: {
-        require: false,
-        rejectUnauthorized: false
-    }
-}*/
 
 (async () => {
     try {
@@ -41,7 +33,7 @@ app.post('/login', async (request, response) => {
     if (username && password) {
         try {
             const query = 'SELECT * FROM accounts WHERE username = $1 AND password = $2;';
-            const {rows} = await pg.query(query, [username, password]);
+            const { rows } = await pg.query(query, [username, password]);
             if (rows.length > 0) {
                 request.session.loggedin = true;
                 request.session.username = username;

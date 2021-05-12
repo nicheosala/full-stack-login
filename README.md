@@ -36,6 +36,21 @@ Scaricare e installare [PostgreSQL](https://www.enterprisedb.com/downloads/postg
     5. nella nuova schermata, clicca su 'browse...' o traduzione e seleziona questa cartella: `C:\Program Files\PostgreSQL\13\bin`. Il nome del percorso della cartella potrebbe leggermente variare a seconda del computer.
     6. prova ad aprire un terminale e a digitare `psql -U postgres` (**nota bene**: U maiuscola!). Inserendo la password scelta per l'utente 'postgres' durante la fase di installazione di PostgreSQl, dovresti aver fatto l'accesso al DBMS.
 
+## Come usare il codice di questo repository [in locale]
+1. scarica o clona il repository
+2. apri l'editor di testo, posizionandolo nella cartella in cui è situato il codice di questo repository
+3. apri un terminale in tale cartella e invia il comando: `npm install`. Questo comando ordina al gestore di pacchetti di Node.js ('npm' sta per 'node.js package manager') di installare tutte le dipendenze elencate nel file [package.json](package.json) [**TODO** attualmente forzi la versione di node.js e questo crea dei warning]
+4. invia il comando `node index.js`. Questo comando avvia il web server Node.js, eseguendo il codice scritto nel file [index.js](index.js). Questo passaggio può non andare a buon fine per molteplici ragioni. Qui alcune:
+    - non hai installato le dipendenze di Node.js. Soluzione: esegui il comando `npm install`
+    - non hai creato un database di nome 'nodelogin' dentro al DBMS PostgreSQL. Soluzione: accedi al DBMS PostgreSQL con il comando `psql -U postgres` (inserisci la password dell'utente postgres quando richiesto). Poi esegui il comando `create database nodelogin;`. In questo modo avrai creare il database nodelogin nel tuo DMBS PostgreSQL locale.
+    - la porta di ascolto di PostgreSQL indicata nel file index.js è diversa da quella da te scelta durante l'installazione di PostgreSQL. Soluzione: sostituisci opportunamente il numero di porta.
+    - la password dell'utente postgres di PostgreSQL indicata nel file index.js è diversa da quella da te scelta durante l'installazione di PostgreSQL. Soluzione: sostituisci opportunamente la password.
+    - problema con il server che non supporta SSL **TODO** per ora ho solo commentato le righe riguardanti SSL nella configurazione del dbms, ma credo che questo farà sì che il dbms di Heroku non funzionerà.
+5. Se il web server è stato avviato correttamente, apri un browser e digita nella barra di ricerca: `localhost:3000`. Dovresti vedere la schermata di login.
+
+## Come usare il codice di questo repository [in remoto]
+**TODO**
+
 ## Possibili migliorie
 Questo è un web server molto semplice. Ad esempio, sarebbe interessante:
 - [DONE] consentire la registrazione al sito web, attraverso la pagina '/register'

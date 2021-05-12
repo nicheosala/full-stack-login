@@ -12,8 +12,5 @@
     "start": "node index.js"
   },
   "author": "",
-  "license": "ISC",
-  "engines": {
-    "node": "15.x"
-  }
+  "license": "ISC"
 }

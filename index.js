@@ -4,10 +4,10 @@ const session = require('express-session');
 
 let pg = new Client({
     connectionString: process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin",
-    ssl: {
+    ssl: process.env.DATABASE_URL ? {
         require: false,
         rejectUnauthorized: false
-    }
+    } : false
 });
 
 (async () => {

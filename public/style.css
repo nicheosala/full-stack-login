@@ -4,20 +4,24 @@
     box-sizing: border-box;
 }
 
-.login-form {
+body {
     width: 300px;
+    padding: 30px;
     margin: 0 auto;
     font-family: Tahoma, Geneva, sans-serif;
 }
 
-.login-form h1 {
+h1 {
     text-align: center;
     color: #4d4d4d;
-    font-size: 24px;
     padding: 20px 0 20px 0;
 }
 
-.login-form input {
+body div {
+    text-align: center;
+}
+
+input {
     width: 100%;
     padding: 15px;
     border: 1px solid #dddddd;
@@ -25,15 +29,9 @@
     box-sizing: border-box;
 }
 
-.login-form input[type="submit"] {
+input[type="submit"] {
     background-color: #535b63;
     border: 0;
     font-weight: bold;
     color: #ffffff;
-}
-
-.register-link {
-    width: 100%;
-    text-align: center;
-    padding: 30px;
 }

@@ -1,6 +1,7 @@
 const { Client } = require('pg');
 const express = require('express');
 const session = require('express-session');
+const path = require('path');
 
 let pg = new Client({
     connectionString: process.env.DATABASE_URL || "postgres://postgres:dana@localhost:5433/nodelogin",
@@ -15,7 +16,6 @@ let pg = new Client({
         await pg.connect();
         const createTableQuery = `create table if not exists accounts (id serial primary key, username varchar(255) not null, password varchar(255) not null);`
         await pg.query(createTableQuery);
-        console.log(`Table 'accounts' successfully created.`);
     } catch (error) {
         console.error(error);
     }
@@ -37,14 +37,13 @@ app.post('/login', async (request, response) => {
             if (rows.length > 0) {
                 request.session.loggedin = true;
                 request.session.username = username;
-                response.redirect('/home');
+                response.redirect('welcome');
             } else {
                 response.send(`Incorrect Username and/or Password!`);
+                response.end();
             }
         } catch (error) {
             throw error;
-        } finally {
-            response.end();
         }
     } else {
         response.send(`Please enter Username and Password!`);
@@ -61,11 +60,9 @@ app.post('/register', async (request, response) => {
             await pg.query(query, [username, password]);
             request.session.loggedin = true;
             request.session.username = username;
-            response.redirect('/home');
+            response.redirect('welcome');
         } catch (error) {
             throw error;
-        } finally {
-            response.end();
         }
     } else {
         response.send(`Please enter Username and Password!`);
@@ -73,13 +70,10 @@ app.post('/register', async (request, response) => {
     }
 })
 
-app.get('/home', (request, response) => {
-    if (request.session.loggedin) {
-        response.send(`Welcome back, ${request.session.username}!`);
-    } else {
-        response.send(`Please login to view this page!`);
-    }
-    response.end();
-});
+app.get('/welcome', async (request, response) => {
+    response.cookie('username', request.session.username);
+    response.sendFile(path.join(__dirname, '/public/welcome.html'));
+})
 
-app.listen(process.env.PORT || 3000);
+const port = process.env.PORT || 3000; 
+app.listen(port, () => console.log(`App listening on port ${port}`));

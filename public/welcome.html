@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Welcome back!</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel='stylesheet' href='style.css' />
+</head>
+
+<body>
+    <h1>Welcome back!</h1>
+    <div><a href='change-password.html'>Change password</a></div>
+    <script>
+        let username = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('username='))
+            .split('=')[1];
+        let title = document.getElementsByTagName('h1')[0];
+        title.innerHTML = `Welcome back, ${username}!`;
+    </script>
+</body>
+
+</html>
